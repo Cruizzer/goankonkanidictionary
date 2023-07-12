@@ -6,7 +6,8 @@ export const GET = async () => {
     try {
         await connect()
 
-        const translations = await Translation.find().limit(50)
+        const translations = await Translation.find().collation({ locale: "en" }).sort({ "ENGLISH": 1 }).limit(50)
+
 
         return new NextResponse(JSON.stringify(translations), { status: 200 })
     }
