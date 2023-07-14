@@ -1,6 +1,7 @@
 import Translation from "@/models/Translation"
 import connect from "@/utils/db"
 import { NextResponse } from "next/server"
+import { useSearchParams } from 'next/navigation'
 
 export const GET = async () => {
     try {
