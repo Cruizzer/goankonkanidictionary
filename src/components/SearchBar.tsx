@@ -1,20 +1,19 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import React from 'react'
 
 const SearchBar = () => {
-    const [searchQuery, setSearchQuery] = useState<string>("")
+    const search = useSearchParams()
+    const [searchQuery, setSearchQuery] = useState<string | null>(search ? search.get('q') : null)
     const router = useRouter()
 
     const onSearch = (event: React.FormEvent) => {
         event.preventDefault()
 
-        const encodedSearchQuery = encodeURI(searchQuery)
+        const encodedSearchQuery = encodeURI(searchQuery || '')
         router.push(`/dictionary?q=${encodedSearchQuery}`)
-
-        console.log("current query: ", encodedSearchQuery)
     }
 
     return (
@@ -27,7 +26,7 @@ const SearchBar = () => {
                     </svg>
                 </div>
                 <input
-                    value={searchQuery}
+                    value={searchQuery || ""}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     type="search"
                     id="default-search"
