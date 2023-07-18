@@ -24,7 +24,6 @@ const Dictionary = () => {
 
   }
 
-
   const { data, isLoading } = useSWR(
     `/api/dictionary?q=${encodedSearchQuery}`,
     fetchTranslations,
@@ -39,14 +38,9 @@ const Dictionary = () => {
 
   return (
     <>
-
-      {/* Search Bar Component */}
+      {isLoading && <h1>Test</h1>}
       <SearchBar />
-
-
-      {/* Translations */}
       <TranslationCard translation={data} />
-
     </>
 
   )
