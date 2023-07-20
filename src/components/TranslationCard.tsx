@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface Translation {
+type Translation = {
     ENGLISH: string;
     KONKANI: string;
 }

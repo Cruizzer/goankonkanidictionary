@@ -1,7 +1,6 @@
 import Translation from "@/models/Translation"
 import connect from "@/utils/db"
 import { NextResponse } from "next/server"
-import type { NextApiRequest, NextApiResponse } from "next"
 
 export async function GET(request: Request) {
     try {
