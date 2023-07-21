@@ -29,7 +29,7 @@ const Dictionary = () => {
 
   return (
     <>
-      <SearchBar getSearchResult={(result) => setTranslation(result)} />
+      <SearchBar getSearchResult={(result) => setTranslation(result)} pageIndex={page} />
       {loading ? <div className={styles.loading}></div> :
         <TranslationCard translation={translation} />}
       <Pagination pageIndex={page} setPageIndex={(page) => setPage(page)} />

@@ -7,11 +7,13 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url)
         const id = searchParams.get('q')
 
+        // const page = searchParams.get('p')
+
         await connect()
 
         const translations = await Translation.find(
             { "ENGLISH": { $regex: id } }
-        ).collation({ locale: "en" }).sort({ "ENGLISH": 1 }).limit(50)
+        ).collation({ locale: "en" }).sort({ "ENGLISH": 1 }).limit(50) // .skip(page * 50 || 0)
 
 
         return new NextResponse(JSON.stringify(translations), { status: 200 })

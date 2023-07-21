@@ -1,24 +1,47 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import React from 'react'
 
 interface SearchBarProps {
     getSearchResult: (query: any) => any
+    pageIndex: number
 }
 
-const SearchBar = ({ getSearchResult }: SearchBarProps) => {
+const SearchBar = ({ getSearchResult, pageIndex }: SearchBarProps) => {
     const [query, searchQuery] = useState<string | null>('')
 
     const onSearch = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        const response = await fetch(`/api/dictionary?q=${query}`)
+        const response = await fetch(`/api/dictionary?q=${query}`) //&p=${pageIndex}
 
         const translation = await response.json()
 
+        console.log(translation)
+
         getSearchResult(translation)
     }
+
+
+    // Bug when component is rendered as q is null.
+
+    // useEffect(() => {
+    //     if (query == "") {
+    //         return
+    //     }
+    //     const onPageChange = async () => {
+    //         const response = await fetch(`/api/dictionary?q=${query}?&p=${pageIndex}`)
+
+    //         const translation = await response.json()
+
+    //         getSearchResult(translation)
+    //     }
+
+    //     console.log(pageIndex)
+    //     onPageChange()
+    // }, [pageIndex])
+
 
     return (
         <form className="p-10" onSubmit={onSearch}>
