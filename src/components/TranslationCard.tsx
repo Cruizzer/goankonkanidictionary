@@ -1,11 +1,11 @@
 import React from 'react'
 
-type Translation = {
+interface Translation {
     ENGLISH: string;
     KONKANI: string;
 }
 
-const TranslationCard = ({ translation }: { translation: Array<Translation> }) => {
+const TranslationCard = ({ translation }: { translation: Translation[] }) => {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-10">

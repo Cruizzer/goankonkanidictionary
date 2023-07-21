@@ -1,19 +1,23 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import React from 'react'
 
-const SearchBar = () => {
-    const search = useSearchParams()
-    const [searchQuery, setSearchQuery] = useState<string | null>(search ? search.get('q') : null)
-    const router = useRouter()
+interface SearchBarProps {
+    getSearchResult: (query: any) => any
+}
 
-    const onSearch = (event: React.FormEvent) => {
+const SearchBar = ({ getSearchResult }: SearchBarProps) => {
+    const [query, searchQuery] = useState<string | null>('')
+
+    const onSearch = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        const encodedSearchQuery = encodeURI(searchQuery || '')
-        router.push(`/dictionary?q=${encodedSearchQuery}`)
+        const response = await fetch(`/api/dictionary?q=${query}`)
+
+        const translation = await response.json()
+
+        getSearchResult(translation)
     }
 
     return (
@@ -26,8 +30,8 @@ const SearchBar = () => {
                     </svg>
                 </div>
                 <input
-                    value={searchQuery || ""}
-                    onChange={(event) => setSearchQuery(event.target.value)}
+                    value={query || ""}
+                    onChange={(event) => searchQuery(event.target.value)}
                     type="search"
                     id="default-search"
                     className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search english word..." required />

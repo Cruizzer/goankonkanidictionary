@@ -1,46 +1,38 @@
 'use client'
 
+import styles from './dictionary.module.css'
 import SearchBar from '@/components/SearchBar';
-import { useSearchParams } from 'next/navigation';
 import useSWR from 'swr'
 import React, { useEffect, useState } from 'react'
 import TranslationCard from '@/components/TranslationCard';
+import Pagination from '@/components/Pagination';
 
 
 const Dictionary = () => {
   // const translations = await getTranslations();
-  const search = useSearchParams()
-  const searchQuery = search ? search.get('q') : null
-  const encodedSearchQuery = encodeURI(searchQuery || "")
+  const [translation, setTranslation] = useState([])
+  const [page, setPage] = useState(0)
+  const [loading, setLoading] = useState(true)
 
-  const fetchTranslations = async (url: string) => {
-    const response = await fetch(url)
+  useEffect(() => {
+    const getTranslations = async () => {
+      const response = await fetch(`api/dictionary?q=`)
+      const translation = await response.json()
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch translations")
+      setTranslation(translation)
+      setLoading(false)
     }
 
-    return response.json()
-
-  }
-
-  const { data, isLoading } = useSWR(
-    `/api/dictionary?q=${encodedSearchQuery}`,
-    fetchTranslations,
-  )
-
-  if (!data) {
-    return null
-  }
-
-  console.log(data)
+    getTranslations()
+  }, [])
 
 
   return (
     <>
-      {isLoading && <h1>Test</h1>}
-      <SearchBar />
-      <TranslationCard translation={data} />
+      <SearchBar getSearchResult={(result) => setTranslation(result)} />
+      {loading ? <div className={styles.loading}></div> :
+        <TranslationCard translation={translation} />}
+      <Pagination pageIndex={page} setPageIndex={(page) => setPage(page)} />
     </>
 
   )
