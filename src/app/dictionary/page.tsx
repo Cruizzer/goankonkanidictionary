@@ -2,7 +2,6 @@
 
 import styles from './dictionary.module.css'
 import SearchBar from '@/components/SearchBar';
-import useSWR from 'swr'
 import React, { useEffect, useState } from 'react'
 import TranslationCard from '@/components/TranslationCard';
 import Pagination from '@/components/Pagination';
