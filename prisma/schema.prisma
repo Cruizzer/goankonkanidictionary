@@ -46,11 +46,13 @@ model User {
 
     username String? @unique
 
-    image    String?
-    accounts Account[]
-    sessions Session[]
-    Post     Post[]
-    Comment  Comment[]
+    image                String?
+    accounts             Account[]
+    sessions             Session[]
+    Post                 Post[]
+    Comment              Comment[]
+    Translations         Translation[]
+    ProposedTranslations ProposedTranslations[]
 }
 
 model Thread {
@@ -64,16 +66,16 @@ model Thread {
 }
 
 model Post {
-    id          String    @id @default(cuid())
-    title       String
-    content     Json?
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    author      User      @relation(fields: [authorId], references: [id])
-    authorId    String
-    subreddit   Thread    @relation(fields: [subredditId], references: [id])
-    subredditId String
-    comments    Comment[]
+    id        String    @id @default(cuid())
+    title     String
+    content   Json?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    author    User      @relation(fields: [authorId], references: [id])
+    authorId  String
+    thread    Thread    @relation(fields: [threadId], references: [id])
+    threadId  String
+    comments  Comment[]
 }
 
 model Comment {
@@ -90,4 +92,24 @@ model Comment {
     replies   Comment[] @relation("ReplyTo")
 
     commentId String?
+}
+
+model Translation {
+    id          String   @id @default(cuid())
+    english     String
+    konkani     String
+    description String?
+    author      User     @relation(fields: [authorId], references: [id])
+    authorId    String
+    createdAt   DateTime @default(now())
+}
+
+model ProposedTranslations {
+    id          String  @id @default(cuid())
+    english     String
+    konkani     String
+    description String?
+    approved    Boolean
+    author      User    @relation(fields: [authorId], references: [id])
+    authorId    String
 }
