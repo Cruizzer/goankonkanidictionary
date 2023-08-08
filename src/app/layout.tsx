@@ -2,8 +2,9 @@ import Navbar from '@/components/Navbar'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import AuthProvider from '@/components/AuthProvider'
 import { cn } from '@/lib/utils'
+import AuthProvider from '@/components/AuthProvider'
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,13 +19,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={cn('bg-black text-slate-900 antialiased light', inter.className)}>
-      <body className="bg-black text-white min-h-screen antialiased">
+    <html lang="en" className={cn('', inter.className)}>
+      <body className="bg-gray-300 dark:bg-black min-h-screen antialiased">
         <AuthProvider>
-          <div>
-            <Navbar />
-            {children}
-          </div>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <div>
+              <Navbar />
+              {children}
+            </div>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
