@@ -52,7 +52,7 @@ model User {
     Post                 Post[]
     Comment              Comment[]
     Translations         Translation[]
-    ProposedTranslations ProposedTranslations[]
+    ProposedTranslations ProposedTranslation[]
 }
 
 model Thread {
@@ -96,15 +96,15 @@ model Comment {
 
 model Translation {
     id          String   @id @default(cuid())
-    english     String
-    konkani     String
+    English     String
+    Konkani     String
     description String?
     author      User     @relation(fields: [authorId], references: [id])
     authorId    String
     createdAt   DateTime @default(now())
 }
 
-model ProposedTranslations {
+model ProposedTranslation {
     id          String  @id @default(cuid())
     english     String
     konkani     String
