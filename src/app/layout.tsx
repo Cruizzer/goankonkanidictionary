@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google'
 import AuthProvider from '@/components/AuthProvider'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import Providers from '@/components/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,16 +23,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn('', inter.className)}>
       <body className="bg-gray-300 dark:bg-black dark:text-white min-h-screen antialiased">
-        <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div>
-              <Navbar />
-              {children}
-            </div>
-          </ThemeProvider>
-        </AuthProvider>
-        <Toaster />
+        <Providers>
+          <AuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <div>
+                <Navbar />
+                {children}
+              </div>
+            </ThemeProvider>
+          </AuthProvider>
+          <Toaster />
+        </Providers>
       </body>
     </html >
   )
 }
+
+// Todo: Merge providers

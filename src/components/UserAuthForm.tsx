@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react'
 import * as React from 'react'
 import { FC } from 'react'
 import { Button } from '@/components/ui/button'
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { Icons } from './Icons'
 import Error from 'next/error'
 

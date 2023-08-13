@@ -1,11 +1,14 @@
-'use client'
 
 import Link from "next/link";
 import React from 'react'
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from '@/lib/utils'
+import { getAuthSession } from "@/lib/auth";
+import { UserAccountNav } from "./UserAccountNav";
 
-const Navbar = () => {
+const Navbar = async () => {
+    const session = await getAuthSession()
+
     return (
 
         <div className="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
@@ -28,7 +31,13 @@ const Navbar = () => {
                             Contact us
                         </Link>
 
-                        <Link href="/sign-in" className={buttonVariants({ variant: "default" })}>Sign In</Link>
+                        {session?.user ? (
+                            <UserAccountNav user={session.user} />
+                        ) : (
+                            <Link href='/sign-in' className={buttonVariants()}>
+                                Sign In
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
