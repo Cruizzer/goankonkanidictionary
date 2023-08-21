@@ -11,6 +11,10 @@ export async function POST(req: Request) {
             return new Response('Unauthorized', { status: 401 })
         }
 
+        if (session?.user.role !== 'Admin') {
+            return new Response('Forbidden', { status: 403 })
+        }
+
         const body = await req.json()
         const { name } = ThreadValidator.parse(body)
         // check if thread already exists

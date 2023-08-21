@@ -13,7 +13,7 @@ import { useState } from 'react'
 const Page = () => {
     const router = useRouter()
     const [input, setInput] = useState<string>('')
-    const { loginToast } = useCustomToasts()
+    const { loginToast, authorisationToast } = useCustomToasts()
 
     const { mutate: createCommunity, isLoading } = useMutation({
         mutationFn: async () => {
@@ -45,6 +45,10 @@ const Page = () => {
                 if (err.response?.status === 401) {
                     return loginToast()
                 }
+
+                if (err.response?.status === 403) {
+                    return authorisationToast()
+                }
             }
 
             toast({
@@ -59,8 +63,8 @@ const Page = () => {
     })
 
     return (
-        <div className='container flex items-center h-full max-w-3xl mx-auto'>
-            <div className='relative bg-white w-full h-fit p-4 rounded-lg space-y-6'>
+        <div className='container flex items-center h-screen max-w-3xl mx-auto'>
+            <div className='relative bg-white w-full h-fit p-4 rounded-lg space-y-6 dark:bg-gray-700'>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-xl font-semibold'>Create a Community</h1>
                 </div>
@@ -73,13 +77,13 @@ const Page = () => {
                         Community names including capitalization cannot be changed.
                     </p>
                     <div className='relative'>
-                        <p className='absolute text-sm left-0 w-8 inset-y-0 grid place-items-center text-zinc-400'>
+                        <p className='absolute text-sm left-0 w-8 inset-y-0 grid place-items-center text-zinc-400 ml-4'>
                             thread/
                         </p>
                         <Input
                             value={input}
                             onChange={(e: any) => setInput(e.target.value)}
-                            className='pl-12'
+                            className='pl-16'
                         />
                     </div>
                 </div>

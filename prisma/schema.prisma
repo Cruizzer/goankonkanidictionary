@@ -11,6 +11,11 @@ datasource db {
     relationMode = "prisma"
 }
 
+enum VoteType {
+    UP
+    DOWN
+}
+
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -38,21 +43,28 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model User {
-    id             String     @id @default(cuid())
-    name           String?
-    email          String?    @unique
-    emailVerified  DateTime?
-    createdThreads Thread[]   @relation("CreatedBy")
-    votes          PostVote[]
+enum UserRole {
+    Admin
+    User
+}
 
-    username String? @unique
+model User {
+    id             String    @id @default(cuid())
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    createdThreads Thread[]  @relation("CreatedBy")
+    votes          Vote[]
+
+    username String?  @unique
+    role     UserRole @default(User)
 
     image                String?
     accounts             Account[]
     sessions             Session[]
     Post                 Post[]
     Comment              Comment[]
+    CommentVote          CommentVote[]
     Translations         Translation[]
     ProposedTranslations ProposedTranslation[]
 }
@@ -70,33 +82,18 @@ model Thread {
     @@index([name])
 }
 
-enum VoteType {
-    UP
-    DOWN
-}
-
 model Post {
-    id        String     @id @default(cuid())
+    id        String    @id @default(cuid())
     title     String
     content   Json?
-    createdAt DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
-    author    User       @relation(fields: [authorId], references: [id])
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    author    User      @relation(fields: [authorId], references: [id])
     authorId  String
-    thread    Thread     @relation(fields: [threadId], references: [id])
+    thread    Thread    @relation(fields: [threadId], references: [id])
     threadId  String
     comments  Comment[]
-    PostVote  PostVote[]
-}
-
-model PostVote {
-    user   User     @relation(fields: [userId], references: [id])
-    userId String
-    post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-    postId String
-    type   VoteType
-
-    @@id([userId, postId])
+    votes     Vote[]
 }
 
 model Comment {
@@ -112,13 +109,34 @@ model Comment {
     replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     replies   Comment[] @relation("ReplyTo")
 
+    votes     CommentVote[]
     commentId String?
+}
+
+model Vote {
+    user   User     @relation(fields: [userId], references: [id])
+    userId String
+    post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId String
+    type   VoteType
+
+    @@id([userId, postId])
+}
+
+model CommentVote {
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
+    comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+    commentId String
+    type      VoteType
+
+    @@id([userId, commentId])
 }
 
 model Translation {
     id          String   @id @default(cuid())
-    English     String
-    Konkani     String
+    english     String
+    konkani     String
     description String?
     author      User     @relation(fields: [authorId], references: [id])
     authorId    String

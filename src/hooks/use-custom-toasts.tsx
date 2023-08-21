@@ -12,12 +12,28 @@ export const useCustomToasts = () => {
                 <Link
                     onClick={() => dismiss()}
                     href='/sign-in'
-                    className={buttonVariants({ variant: 'outline' })}>
+                    className={buttonVariants({ variant: 'secondary' })}>
                     Login
                 </Link>
             ),
         })
     }
 
-    return { loginToast }
+    const authorisationToast = () => {
+        const { dismiss } = toast({
+            title: 'Admin required.',
+            description: 'You do not have the required access.',
+            variant: 'destructive',
+            action: (
+                <Link
+                    onClick={() => dismiss()}
+                    href='/sign-in'
+                    className={buttonVariants({ variant: 'secondary' })}>
+                    Login
+                </Link>
+            ),
+        })
+    }
+
+    return { loginToast, authorisationToast }
 }
