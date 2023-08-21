@@ -75,12 +75,12 @@ export const Editor: React.FC<EditorProps> = ({ threadId }) => {
         const EditorJS = (await import('@editorjs/editorjs')).default
         const Header = (await import('@editorjs/header')).default
         const Embed = (await import('@editorjs/embed')).default
-        const Table = (await import('@editorjs/table')).default
+        // const Table = (await import('@editorjs/table')).default
         const List = (await import('@editorjs/list')).default
         const Code = (await import('@editorjs/code')).default
         const LinkTool = (await import('@editorjs/link')).default
         const InlineCode = (await import('@editorjs/inline-code')).default
-        const ImageTool = (await import('@editorjs/image')).default
+        // const ImageTool = (await import('@editorjs/image')).default
 
         if (!ref.current) {
             const editor = new EditorJS({
@@ -99,28 +99,28 @@ export const Editor: React.FC<EditorProps> = ({ threadId }) => {
                             endpoint: '/api/link',
                         },
                     },
-                    image: {
-                        class: ImageTool,
-                        config: {
-                            uploader: {
-                                async uploadByFile(file: File) {
-                                    // upload to uploadthing
-                                    const [res] = await uploadFiles([file], 'imageUploader')
+                    // image: {
+                    //     class: ImageTool,
+                    //     config: {
+                    //         uploader: {
+                    //             async uploadByFile(file: File) {
+                    //                 // upload to uploadthing
+                    //                 const [res] = await uploadFiles([file], 'imageUploader')
 
-                                    return {
-                                        success: 1,
-                                        file: {
-                                            url: res.fileUrl,
-                                        },
-                                    }
-                                },
-                            },
-                        },
-                    },
+                    //                 return {
+                    //                     success: 1,
+                    //                     file: {
+                    //                         url: res.fileUrl,
+                    //                     },
+                    //                 }
+                    //             },
+                    //         },
+                    //     },
+                    // },
                     list: List,
                     code: Code,
                     inlineCode: InlineCode,
-                    table: Table,
+                    // table: Table,
                     embed: Embed,
                 },
             })
