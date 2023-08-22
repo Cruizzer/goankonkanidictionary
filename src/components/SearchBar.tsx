@@ -14,7 +14,7 @@ const SearchBar = ({ getSearchResult, pageIndex }: SearchBarProps) => {
     const onSearch = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        const response = await fetch(`/api/dictionary?q=${query}`) //&p=${pageIndex}
+        const response = await fetch(`/api/dictionary2?q=${query}`) //&p=${pageIndex}
 
         const translation = await response.json()
 

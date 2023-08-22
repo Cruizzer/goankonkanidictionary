@@ -45,6 +45,3 @@ export async function POST(req: Request) {
         return new Response('Could not create thread', { status: 500 })
     }
 }
-
-
-// Fix depricated name
