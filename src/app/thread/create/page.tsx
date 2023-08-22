@@ -63,7 +63,7 @@ const Page = () => {
     })
 
     return (
-        <div className='container flex items-center h-screen max-w-3xl mx-auto'>
+        <div className='container flex items-center md:pt-48 flex-col justify-center pt-24 max-w-3xl mx-auto'>
             <div className='relative bg-white w-full h-fit p-4 rounded-lg space-y-6 dark:bg-gray-700'>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-xl font-semibold'>Create a Community</h1>

@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <>
       {/* thread info */}
-      <div className='flex justify-center items-center h-screen'>
+      <div className='md:pt-48 flex flex-col items-center justify-center pt-24'>
         <div className='text-center'>
 
           {/* Create Thread */}

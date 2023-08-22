@@ -1,26 +1,27 @@
-import Translation from "@/models/Translation"
-import connect from "@/utils/db"
+import { db } from '@/lib/db'
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url)
-        const id = searchParams.get('q')
+        const query = searchParams.get('q')
 
-        // const page = searchParams.get('p')
+        const translations = await db.translation.findMany({
+            where: {
+                english: {
+                    contains: query || '',
+                },
+            },
+            orderBy: [
+                {
+                    english: 'asc',
+                },
+            ],
+            take: 20
+        })
 
-        await connect()
-
-        const translations = await Translation.find(
-            { "ENGLISH": { $regex: id } }
-        ).collation({ locale: "en" }).sort({ "ENGLISH": 1 }).limit(50) // .skip(page * 50 || 0)
-
-
-        return new NextResponse(JSON.stringify(translations), { status: 200 })
-
-
-    }
-    catch (err) {
-        return new NextResponse("Database error!", { status: 500 })
+        return new Response(JSON.stringify(translations))
+    } catch (error) {
+        return new Response('Could not fetch posts', { status: 500 })
     }
 }
