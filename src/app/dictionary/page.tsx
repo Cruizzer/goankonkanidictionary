@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react'
 import TranslationCard from '@/components/TranslationCard';
 import Pagination from '@/components/Pagination';
 import { useQuery } from '@tanstack/react-query';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import ToggleLanguage from '@/components/ToggleLanguage';
 
 
