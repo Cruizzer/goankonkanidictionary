@@ -5,33 +5,48 @@ import SearchBar from '@/components/SearchBar';
 import React, { useEffect, useState } from 'react'
 import TranslationCard from '@/components/TranslationCard';
 import Pagination from '@/components/Pagination';
+import { useQuery } from '@tanstack/react-query';
 
 
 const Dictionary = () => {
-  // const translations = await getTranslations();
-  const [translation, setTranslation] = useState([])
-  const [page, setPage] = useState(0)
-  const [loading, setLoading] = useState(true)
+  const [submitQuery, setSubmitQuery] = useState<string>('')
+  const [page, setPage] = useState<number>(0)
+  const [translations, setTranslations] = useState([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const getTranslations = async () => {
-      const response = await fetch(`api/dictionary?q=`)
-      const translation = await response.json()
+      const response = await fetch(`api/dictionary?q=${submitQuery}&p=${page}`)
+      const translations = await response.json()
 
-      setTranslation(translation)
+      setTranslations(translations)
       setLoading(false)
     }
 
     getTranslations()
-  }, [])
+  }, [page, submitQuery])
 
+  // const [currentPage, setCurrentPage] = useState(1);
+
+  // const { isLoading, data, isError, isFetching, isPreviousData, error } = useQuery({
+  //   queryKey: ["translations", page],
+  //   queryFn: async () => {
+  //     const response = await fetch(`api/dictionary?q=${submitQuery}&p=${page}`)
+  //     const translations = await response.json()
+  //     return translation
+  //   },
+  //   keepPreviousData: true
+  // });
+
+  // if (isLoading) return "Loading...";
+  // if (isError) return `Error: ${error.message}`;
 
   return (
     <>
-      <SearchBar getSearchResult={(result) => setTranslation(result)} pageIndex={page} />
+      <SearchBar setSubmitQuery={(query) => setSubmitQuery(query)} setPageIndex={(page) => setPage(page)} />
       {loading ? <div className={styles.loading}></div> :
-        <TranslationCard translation={translation} />}
-      <Pagination pageIndex={page} setPageIndex={(page) => setPage(page)} />
+        <TranslationCard translations={translations} />}
+      <Pagination pageIndex={page} setPageIndex={(page) => setPage(page)} translations={translations} />
     </>
 
   )

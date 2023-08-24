@@ -4,23 +4,29 @@ import { FC, useEffect, useState } from 'react'
 import React from 'react'
 
 interface SearchBarProps {
-    getSearchResult: (query: any) => any
-    pageIndex: number
+    setSubmitQuery: (query: string) => any
+    // getSearchResult: (query: any) => any
+    // pageIndex: number
+    setPageIndex: (pageNumber: number) => any
 }
 
-const SearchBar = ({ getSearchResult, pageIndex }: SearchBarProps) => {
-    const [query, searchQuery] = useState<string | null>('')
+const SearchBar = ({ setPageIndex, setSubmitQuery }: SearchBarProps) => {
+    const [query, setQuery] = useState<string>('')
 
     const onSearch = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        const response = await fetch(`/api/dictionary?q=${query}`) //&p=${pageIndex}
+        setPageIndex(0)
 
-        const translation = await response.json()
+        setSubmitQuery(query)
 
-        console.log(translation)
+        // const response = await fetch(`/api/dictionary?q=${query}&?p=${pageIndex}`) //&p=${pageIndex}
 
-        getSearchResult(translation)
+        // const translation = await response.json()
+
+        // console.log(translation)
+
+        // getSearchResult(translation)
     }
 
 
@@ -54,7 +60,7 @@ const SearchBar = ({ getSearchResult, pageIndex }: SearchBarProps) => {
                 </div>
                 <input
                     value={query || ""}
-                    onChange={(event) => searchQuery(event.target.value)}
+                    onChange={(event) => setQuery(event.target.value)}
                     type="search"
                     id="default-search"
                     className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search english word..." required />

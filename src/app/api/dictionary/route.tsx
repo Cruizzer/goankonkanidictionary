@@ -5,6 +5,7 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url)
         const query = searchParams.get('q')
+        const page = searchParams.get('p')
 
         const translations = await db.translation.findMany({
             where: {
@@ -17,7 +18,9 @@ export async function GET(request: Request) {
                     english: 'asc',
                 },
             ],
-            take: 20
+            skip: parseInt(page!) * 20,
+            take: 20,
+
         })
 
         return new Response(JSON.stringify(translations))
