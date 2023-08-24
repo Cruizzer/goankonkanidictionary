@@ -11,6 +11,45 @@ import { useQuery } from '@tanstack/react-query';
 const Dictionary = () => {
   const [submitQuery, setSubmitQuery] = useState<string>('')
   const [page, setPage] = useState<number>(0)
+
+
+  const { isLoading, data: translations, isError, isFetching, isPreviousData, error, refetch } = useQuery({
+    queryKey: ["translations", page, submitQuery],
+    queryFn: async () => {
+      const response = await fetch(`api/dictionary?q=${submitQuery}&p=${page}`)
+      const translations = await response.json()
+      return translations
+    },
+    keepPreviousData: true
+  });
+
+  return (
+    <>
+      <SearchBar setSubmitQuery={(query) => setSubmitQuery(query)} setPageIndex={(page) => setPage(page)} />
+      {isLoading ? <div className={styles.loading}></div> :
+        <TranslationCard translations={translations} />}
+      <Pagination pageIndex={page} setPageIndex={(page) => setPage(page)} translations={translations} />
+    </>
+
+  )
+}
+
+export default Dictionary
+
+/*
+'use client'
+
+import styles from './dictionary.module.css'
+import SearchBar from '@/components/SearchBar';
+import React, { useEffect, useState } from 'react'
+import TranslationCard from '@/components/TranslationCard';
+import Pagination from '@/components/Pagination';
+import { useQuery } from '@tanstack/react-query';
+
+
+const Dictionary = () => {
+  const [submitQuery, setSubmitQuery] = useState<string>('')
+  const [page, setPage] = useState<number>(0)
   const [translations, setTranslations] = useState([])
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -52,4 +91,5 @@ const Dictionary = () => {
   )
 }
 
-export default Dictionary
+export default Dictionary 
+*/
