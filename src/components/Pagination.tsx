@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 interface PaginationProps {
     pageIndex: number
-    setPageIndex: (pageNumber: number) => any
+    setPageIndex: (pageNumber: number) => void
     translations: Translation[]
 }
 
