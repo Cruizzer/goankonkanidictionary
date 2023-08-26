@@ -50,4 +50,4 @@ export async function GET(request: Request) {
     }
 }
 
-/* Todo: Fix querying languages */
+/* Todo: Fix querying function */
